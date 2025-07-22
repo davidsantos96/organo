@@ -11,66 +11,32 @@ import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
-   const [times, setTimes] = useState([
-    { id: uuidv4(), nome: 'Programação', corPrimaria: '#57C278', corSecundaria: '#D9F7E9' },
-    { id: uuidv4(), nome: 'Front-End', corPrimaria: '#82CFFA', corSecundaria: '#E8F8FF' },
-    { id: uuidv4(), nome: 'Data Science', corPrimaria: '#A6D157', corSecundaria: '#F0F8E2' },
-    { id: uuidv4(), nome: 'Devops', corPrimaria: '#E06B69', corSecundaria: '#FDE7E8' },
-    { id: uuidv4(), nome: 'UX e Design', corPrimaria: '#DB6EBF', corSecundaria: '#FAE9F5' },
-    { id: uuidv4(), nome: 'Mobile', corPrimaria: '#FFBA05', corSecundaria: '#FFF5D9' },
-    { id: uuidv4(), nome: 'Inovação e Gestão', corPrimaria: '#FF8A29', corSecundaria: '#FFEEDF' }
+  const [times, setTimes] = useState([
+    { id: uuidv4(), nome: 'Programação', cor: '#57C278' },
+    { id: uuidv4(), nome: 'Front-End', cor: '#82CFFA' },
+    { id: uuidv4(), nome: 'Data Science', cor: '#A6D157' },
+    { id: uuidv4(), nome: 'Devops', cor: '#E06B69' },
+    { id: uuidv4(), nome: 'UX e Design', cor: '#DB6EBF' },
+    { id: uuidv4(), nome: 'Mobile', cor: '#FFBA05' },
+    { id: uuidv4(), nome: 'Inovação e Gestão', cor: '#FF8A29' }
   ])
 
   const [colaboradores, setColaboradores] = useState([]);
-    debugger
+
   const aoNovoColaboradorAdcionado = (colaborador) => {
     setColaboradores([...colaboradores, { ...colaborador, id: uuidv4() }]);
   }
 
-  function deletarColaborador(id) {  // ...existing code...
-  
-  function App() {
-  
-    const [times, setTimes] = useState([
-      // ...times...
-    ]);
-  
-    const [colaboradores, setColaboradores] = useState([]);
-  
-    const aoNovoColaboradorAdcionado = (colaborador) => {
-      setColaboradores([...colaboradores, { ...colaborador, id: uuidv4() }]);
-    };
-  
-    function deletarColaborador(id) {
-      setColaboradores(colaboradores.filter(colaborador => colaborador.id !== id));
-    }
-  
-    // O return deve estar dentro da função App!
-    return (
-      <div className="App">
-        <Banner />
-        <Formulario
-          times={times.map(time => time.nome)}
-          aoColaboradorCadastrado={aoNovoColaboradorAdcionado}
-        />
-        {times.map((time) => (
-          <Time
-            key={time.id}
-            nome={time.nome}
-            corPrimaria={time.corPrimaria}
-            corSecundaria={time.corSecundaria}
-            colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
-            aoDeletar={deletarColaborador}
-          />
-        ))}
-        <Rodape />
-      </div>
-    );
-  }
-  
-
-  // ...existing code...
+  function deletarColaborador(id) {
     setColaboradores(colaboradores.filter(colaborador => colaborador.id !== id));
+  }
+
+  function mudarCorDoTime(cor, id) {
+    setTimes(times.map(time =>
+      time.id === id
+        ? { ...time, cor: cor }
+        : time
+    ));
   }
 
   return (
@@ -78,15 +44,15 @@ function App() {
       <Banner />
       <Formulario times={times.map(time => time.nome)} aoColaboradorCadastrado={colaborador => aoNovoColaboradorAdcionado(colaborador)} />
 
-      {times.map((time, indice) => <Time 
-      key={time.id}
-      nome={time.nome}
-      corPrimaria={time.corPrimaria} 
-      corSecundaria={time.corSecundaria}
-      colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
-      aoDeletar={deletarColaborador}
-      />
-      )}
+      {times.map((time, indice) => (
+        <Time
+          time={time}
+          key={time.id}
+          colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+          aoDeletar={deletarColaborador}
+          mudarCor={mudarCorDoTime}
+        />
+      ))}
       <Rodape />
     </div>
 
